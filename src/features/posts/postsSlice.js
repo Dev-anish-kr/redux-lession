@@ -39,6 +39,19 @@ export const updatePost=createAsyncThunk("posts/updatePost", async (initialPost)
     }
 })
 
+export const deletePost=createAsyncThunk("posts/deletePost", async(initialPost)=>{
+    const {id}=initialPost;
+    try{
+        const response = await axios.delete(`${POST_URL}/${id}`);
+        if(response?.status===200) return initialPost;
+        return `${response?.status}:${response.statusText}`;
+
+
+    }catch(err){
+        return err.message;
+    }
+})
+
 const postsSlice = createSlice({
     name: "posts",
     initialState,
@@ -94,7 +107,7 @@ const postsSlice = createSlice({
                     }
                     return post
                 });
-                state.posts = state.posts.concat(loadedPosts)
+                state.posts = loadedPosts;
                 return;
             })
             .addCase(fetchPosts.rejected, (state, action) => {

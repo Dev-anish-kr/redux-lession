@@ -7,15 +7,9 @@ import { selectAllPosts, getPostError, getPostStatus, fetchPosts } from './posts
 
 const PostList = () => {
     const dispatch = useDispatch();
-    const postsFetched = useSelector(selectAllPosts);
+    const posts = useSelector(selectAllPosts);
     const postsStatue = useSelector(getPostStatus);
     const error = useSelector(getPostError);
-
-    const posts = postsFetched.filter((value, index, self) =>
-        index === self.findIndex((t) => (
-            t.id === value.id
-        ))
-    )
     useEffect(() => {
         if (postsStatue === "idle") {
             dispatch(fetchPosts())

@@ -8,10 +8,11 @@ import { selectAllUsers } from "../users/userSlice";
 
 const EditPostForm = () => {
 
-    const postId = useParams();
+    const {postId} = useParams();
     const navigate = useNavigate();
 
     const post = useSelector((state) => selectByPostId(state, Number(postId)));
+
 
     const users = useSelector(selectAllUsers);
 
