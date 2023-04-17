@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllUsers } from "../users/userSlice";
 import { addNewPost} from "./postsSlice";
+import { useNavigate } from "react-router-dom";
 const AddpostForm = () => {
   const [title, setTitle] = useState("");
 
@@ -13,6 +14,7 @@ const AddpostForm = () => {
   const users = useSelector(selectAllUsers);
 
   const dispatch = useDispatch()
+  const navigate=useNavigate();
 
   const onTitleChange = e => setTitle(e.target.value);
   const contentChange = e => setContent(e.target.value);
@@ -28,6 +30,7 @@ const AddpostForm = () => {
         setTitle("");
         setContent("");
         setUserId("");
+        navigate("/");
       } catch (error) {
         console.log("failed to save", error);
       }

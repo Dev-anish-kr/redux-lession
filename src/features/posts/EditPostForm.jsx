@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectByPostId, updatePost } from "./postsSlice";
+import { selectByPostId, updatePost, deletePost } from "./postsSlice";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { selectAllUsers } from "../users/userSlice";
 
 const EditPostForm = () => {
 
-    const {postId} = useParams();
+    const { postId } = useParams();
     const navigate = useNavigate();
 
     const post = useSelector((state) => selectByPostId(state, Number(postId)));
@@ -16,7 +16,7 @@ const EditPostForm = () => {
 
     const users = useSelector(selectAllUsers);
 
- 
+
 
     const [title, setTitle] = useState(post?.title)
     const [content, setContent] = useState(post?.body)
@@ -43,7 +43,7 @@ const EditPostForm = () => {
         if (cansave) {
             try {
                 setRequestStatus("pending");
-                dispatch(updatePost({id:post.id,title,body:content, reactions:post.reactions})).unwrap();
+                dispatch(updatePost({ id: post.id, title,userId, body: content, reactions: post.reactions })).unwrap();
                 setTitle("");
                 setContent("");
                 setUserId("");
@@ -54,6 +54,22 @@ const EditPostForm = () => {
             finally {
                 setRequestStatus("idle")
             }
+        }
+    }
+
+    const onDelete = () => {
+        try {
+            setRequestStatus("pending");
+            dispatch(deletePost({ id: post.id })).unwrap();
+            setTitle("");
+            setContent("");
+            setUserId("");
+            navigate("/")
+
+        } catch (error) {
+            console.log("failed to Deletee", error);
+        } finally {
+            setRequestStatus("idle")
         }
     }
 
@@ -93,6 +109,10 @@ const EditPostForm = () => {
                     onClick={onSubmit}
                     disabled={!cansave}
                 >Save Post</button>
+                <button
+                    type="button"
+                    onClick={onDelete}
+                >Delete</button>
             </form>
         </section>
     )
