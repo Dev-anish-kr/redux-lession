@@ -3,10 +3,14 @@ import PostAuthor from './PostAuthor';
 
 
 import ReactionButtons from './ReactionButtons';
+import { useSelector } from 'react-redux';
+import { selectByPostId } from './postsSlice';
 
 import TimeAgo from './TimeAgo';
 
-const PostExcept = ({ post }) => {
+const PostExcept = ({ postId }) => {
+
+    const post=useSelector(state=>selectByPostId(state,postId));
     return (
         <article>
             <h3>{post.title}</h3>
